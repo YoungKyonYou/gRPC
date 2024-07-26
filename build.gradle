@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.19'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+ext {
+    grpcVersion = '1.60.0'
+    protocVersion = '3.24.0'
+    logbackVersion = '1.4.12'
+    jacksonVersion = '2.12.7.1'
+    tomcatAnnotationsVersion = '6.0.53'
+    junitVersion = '5.10.1'
+}
+dependencies {
+    // grpc / proto related dependencies
+    implementation "io.grpc:grpc-netty-shaded:$grpcVersion"
+    implementation "io.grpc:grpc-protobuf:$grpcVersion"
+    implementation "io.grpc:grpc-stub:$grpcVersion"
+
+    // necessary for Java 9+
+    implementation "org.apache.tomcat:annotations-api:$tomcatAnnotationsVersion"
+
+    // logback
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+    // Jackson lib for a performance test
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protocVersion}"
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc{}
+        }
+    }
+}

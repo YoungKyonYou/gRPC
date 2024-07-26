@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package sec02; //이렇게 패키지로 구분을 해줘야 오류가 안남 지금 sec01과 sec02 에 person.proto가 있지만 package가 꼭 있어야 구분이 됨
+
+/**
+이 옵션을 true로 설정하면, 각 메시지가 별도의 Java 파일로 생성됩니다.
+이렇게 하면 코드의 가독성이 향상되고, 특정 메시지에 대한 코드를 쉽게 찾을 수 있습니다.
+ 또한, 이렇게 하면 컴파일 시간이 단축될 수 있습니다. 왜냐하면 변경된 메시지만 다시 컴파일하면 되기 때문입니다.
+ 이렇게 하니까 generated 쪽의 sec02 폴더 안에 Person, PersonOrBuilder 클래스가 생김
+ */
+option java_multiple_files = true; //default : false
+//option java_package 도 각 proto 파일마다 다르게 지어야 된다 나는 secXX로 구분지어줌
+option java_package = "com.youyk.models.sec02"; //build/generated/source/proto/main/java/com/youyk/models 아래 PersonOUterClass 만들어짐
+//option go_package; //아래 message ~는 중립적인 언어로 만들어졌는데 이렇게 하면 여러 언어로 만들어지게 할 수 있다.
+
+message Person {
+  string name = 1;
+  int32 age = 2; // 2를 assign 한다는 게 아니라 번호를 줘야 돼서 주는 것
+}
