@@ -27,6 +27,23 @@ message AllAccountsResponse {
   repeated AccountBalance accounts = 1;
 }
 
+message WithdrawReques{
+  int32 account_number = 1;
+  int32 amount = 2;
+}
+
+message Money{
+  int32 amount = 1;
+}
+
+message DepositRequest{
+  //client streaming에서 account_number를 하나만 보내고 계속 money만 보내기 위해서 oneof를 사용함
+  oneof request {
+    int32 account_number = 1;
+    Money money = 2;
+  }
+}
+
 //서비스 정의
 service BankService {
   //method naming convention
@@ -36,4 +53,10 @@ service BankService {
 
   //parameter가 없을 때 이렇게 사용
   rpc GetAllAccounts(google.protobuf.Empty) returns (AllAccountsResponse);
+
+  //Server Stream를 사용할 때는 이렇게 리턴 파라미터의 streaming response라는 의미인 stream를 사용한다
+  rpc Withdraw(WithdrawReques) returns (stream Money);
+
+  //client streaming
+  rpc Deposit(stream DepositRequest) returns (AccountBalance);
 }
