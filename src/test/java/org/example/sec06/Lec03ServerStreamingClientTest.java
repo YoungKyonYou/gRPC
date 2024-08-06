@@ -2,7 +2,6 @@ package org.example.sec06;
 
 
 
-import com.google.protobuf.Empty;
 import com.youyk.models.sec06.*;
 import org.example.common.ResponseObserver;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +21,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest{
                 .setAccountNumber(2)
                 .setAmount(20)
                 .build();
-        Iterator<Money> iterator = this.blockingStub.withdraw(request);
+        Iterator<Money> iterator = this.bankBlockingStub.withdraw(request);
         int count = 0;
         while(iterator.hasNext()){
             log.info("received money : {}", iterator.next());
@@ -39,7 +38,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest{
                 .build();
 
         ResponseObserver<Money> observer = ResponseObserver.create();
-        this.stub.withdraw(request, observer);
+        this.bankStub.withdraw(request, observer);
         observer.await();
         Assertions.assertEquals(2, observer.getItems().size());
         Assertions.assertEquals(10, observer.getItems().get(0).getAmount());

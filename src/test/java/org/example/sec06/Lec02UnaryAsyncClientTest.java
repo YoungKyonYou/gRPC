@@ -6,14 +6,11 @@ import com.google.protobuf.Empty;
 import com.youyk.models.sec06.AccountBalance;
 import com.youyk.models.sec06.AllAccountsResponse;
 import com.youyk.models.sec06.BalanceCheckRequest;
-import io.grpc.stub.StreamObserver;
 import org.example.common.ResponseObserver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.CountDownLatch;
 
 
 public class Lec02UnaryAsyncClientTest extends AbstractTest{
@@ -26,7 +23,7 @@ public class Lec02UnaryAsyncClientTest extends AbstractTest{
                 .build();
 
         ResponseObserver<AccountBalance> observer = ResponseObserver.create();
-        this.stub.getAccountBalance(request, observer);
+        this.bankStub.getAccountBalance(request, observer);
         observer.await();
         Assertions.assertEquals(1, observer.getItems().size());
         Assertions.assertEquals(100, observer.getItems().get(0).getBalance());
@@ -39,7 +36,7 @@ public class Lec02UnaryAsyncClientTest extends AbstractTest{
     @Test
     public void getAllAccountsTest(){
         ResponseObserver<AllAccountsResponse> observer = ResponseObserver.create();
-        this.stub.getAllAccounts(Empty.newBuilder().build(), observer);
+        this.bankStub.getAllAccounts(Empty.newBuilder().build(), observer);
         observer.await();
         Assertions.assertEquals(1, observer.getItems().size());
         Assertions.assertEquals(10, observer.getItems().get(0).getAccountsCount());

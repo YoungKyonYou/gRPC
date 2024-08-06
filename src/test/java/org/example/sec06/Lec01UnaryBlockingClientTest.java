@@ -22,14 +22,14 @@ public class Lec01UnaryBlockingClientTest extends AbstractTest{
                 .setAccountNumber(1)
                 .build();
 
-        AccountBalance balance = this.blockingStub.getAccountBalance(request);
+        AccountBalance balance = this.bankBlockingStub.getAccountBalance(request);
         log.info("unary balance received: {}", balance);
         Assertions.assertEquals(100, balance.getBalance());
     }
 
     @Test
     public void getAllAccountsTest(){
-        AllAccountsResponse allAccounts = this.blockingStub.getAllAccounts(Empty.newBuilder().build());
+        AllAccountsResponse allAccounts = this.bankBlockingStub.getAllAccounts(Empty.newBuilder().build());
         log.info("unary allAccounts received: {}", allAccounts);
 
         Assertions.assertEquals(10, allAccounts.getAccountsCount());
