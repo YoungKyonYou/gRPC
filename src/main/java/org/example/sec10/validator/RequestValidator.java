@@ -3,6 +3,7 @@ package org.example.sec10.validator;
 import com.youyk.models.sec10.ErrorMessage;
 import com.youyk.models.sec10.ValidationCode;
 import io.grpc.Metadata;
+import io.grpc.Metadata.Key;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.protobuf.ProtoUtils;
@@ -46,6 +47,8 @@ public class RequestValidator {
                 .setValidationCode(code)
                 .build();
         metadata.put(ERROR_MESSAGE_KEY, errorMessage);
+        Key<String> key = Key.of("desc", Metadata.ASCII_STRING_MARSHALLER);
+        metadata.put(key, code.toString());
         return metadata;
     }
 

@@ -1,11 +1,18 @@
 package org.example.sec10;
 
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.vinsguru.models.sec09.*;
+
+import com.youyk.models.sec10.AccountBalance;
+import com.youyk.models.sec10.BalanceCheckRequest;
+import com.youyk.models.sec10.BankServiceGrpc;
+import com.youyk.models.sec10.Money;
+import com.youyk.models.sec10.WithdrawRequest;
 import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
-import org.example.sec09.repository.AccountRepository;
-import org.example.sec09.validator.RequestValidator;
+import java.util.Optional;
+import org.example.sec10.repository.AccountRepository;
+import org.example.sec10.validator.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +24,18 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
 
     @Override
     public void getAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver) {
-        RequestValidator.validateAccount(request.getAccountNumber())
-                .map(Status::asRuntimeException)
-                .ifPresentOrElse(
+        Optional<StatusRuntimeException> statusRuntimeException = RequestValidator.validateAccount(
+                request.getAccountNumber());
+
+        if(statusRuntimeException.isPresent()){
+            responseObserver.onError(statusRuntimeException.get());
+        }else{
+            sendAccountBalance(request, responseObserver);
+        }
+             /*   .ifPresentOrElse(
                         responseObserver::onError,
                         () -> sendAccountBalance(request, responseObserver)
-                );
+                );*/
     }
 
     private void sendAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver) {
@@ -41,7 +54,6 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
         RequestValidator.validateAccount(request.getAccountNumber())
                 .or(() -> RequestValidator.isAmountDivisibleBy10(request.getAmount()))
                 .or(() -> RequestValidator.hasSufficientBalance(request.getAmount(), AccountRepository.getBalance(request.getAccountNumber())))
-                .map(Status::asRuntimeException)
                 .ifPresentOrElse(
                         responseObserver::onError,
                         () -> sendMoney(request, responseObserver)
