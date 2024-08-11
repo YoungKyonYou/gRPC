@@ -19,6 +19,7 @@ public class DepositRequestHandler implements StreamObserver<DepositRequest>{
 
     @Override
     public void onNext(DepositRequest depositRequest) {
+        log.info("received deposit {}", depositRequest);
         switch(depositRequest.getRequestCase()){
             case ACCOUNT_NUMBER -> this.accountNumber = depositRequest.getAccountNumber();
             case MONEY -> AccountRepository.addAmount(this.accountNumber, depositRequest.getMoney().getAmount());

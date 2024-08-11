@@ -24,6 +24,7 @@ public class ResponseHandler implements StreamObserver<Output> {
     private StreamObserver<RequestSize> requestObserver;
     private int size ;
 
+    // client 입장에서 onNext()가 호출되면, 서버가 보내는 응답을 처리한다.
     @Override
     public void onNext(Output output) {
         //서버가 보내는 응답 카운트다운
@@ -58,6 +59,7 @@ public class ResponseHandler implements StreamObserver<Output> {
         log.info("requesting size {}", size);
         this.size = size;
         //서버하네 size만큼 응답을 달라고 요청하는 것
+        //FlowControlService.getMessages()에서 onNext()를 호출한다.
         this.requestObserver.onNext(RequestSize.newBuilder().setSize(size).build());
     }
 

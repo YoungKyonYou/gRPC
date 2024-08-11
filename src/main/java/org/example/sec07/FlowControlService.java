@@ -35,6 +35,7 @@ public class FlowControlService extends FlowControlServiceImplBase {
                     .forEach(i ->{
                         log.info("emitting {}", i);
                         //100개 응답 보냄
+                        //ResponseHandler.onNext()를 호출한다
                         responseObserver.onNext(Output.newBuilder().setValue(i).build());
                     });
 

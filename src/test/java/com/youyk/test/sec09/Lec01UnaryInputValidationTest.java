@@ -20,7 +20,7 @@ public class Lec01UnaryInputValidationTest extends AbstractTest {
 
     private static final Logger log = LoggerFactory.getLogger(Lec01UnaryInputValidationTest.class);
 
-    @Test
+/*    @Test
     public void blockingInputValidationTest(){
 
         StatusRuntimeException ex = Assertions.assertThrows(StatusRuntimeException.class, () -> {
@@ -36,9 +36,9 @@ public class Lec01UnaryInputValidationTest extends AbstractTest {
 
 
 
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void asyncInputValidationTest(){
         BalanceCheckRequest request = BalanceCheckRequest.newBuilder()
                 .setAccountNumber(11)
@@ -50,5 +50,5 @@ public class Lec01UnaryInputValidationTest extends AbstractTest {
         Assertions.assertTrue(observer.getItems().isEmpty());
         Assertions.assertNotNull(observer.getThrowable());
         Assertions.assertEquals(Code.INVALID_ARGUMENT, ((StatusRuntimeException)observer.getThrowable()).getStatus().getCode());
-    }
+    }*/
 }

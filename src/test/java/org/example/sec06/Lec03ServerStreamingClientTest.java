@@ -17,7 +17,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest{
 
     @Test
     public void blockingClientWithdrawTest() throws InterruptedException {
-        WithdrawReques request = WithdrawReques.newBuilder()
+        WithdrawRequest request = WithdrawRequest.newBuilder()
                 .setAccountNumber(2)
                 .setAmount(20)
                 .build();
@@ -32,7 +32,7 @@ public class Lec03ServerStreamingClientTest extends AbstractTest{
 
     @Test
     public void asyncClientWithdrawTest() {
-        WithdrawReques request = WithdrawReques.newBuilder()
+        WithdrawRequest request = WithdrawRequest.newBuilder()
                 .setAccountNumber(2)
                 .setAmount(20)
                 .build();

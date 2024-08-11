@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package sec06; //이렇게 패키지로 구분을 해줘야 오류가 안남 지금 sec01과 sec02 에 person.proto가 있지만 package가 꼭 있어야 구분이 됨
+package sec11; //이렇게 패키지로 구분을 해줘야 오류가 안남 지금 sec01과 sec02 에 person.proto가 있지만 package가 꼭 있어야 구분이 됨
 //파라미터가 없는 메서드를 사용하는 경우 이 라이브러리를 사용한다
 import "google/protobuf/empty.proto";
 /**
@@ -11,7 +11,7 @@ import "google/protobuf/empty.proto";
  */
 option java_multiple_files = true; //default : false
 //option java_package 도 각 proto 파일마다 다르게 지어야 된다 나는 secXX로 구분지어줌
-option java_package = "com.youyk.models.sec06"; //build/generated/source/proto/main/java/com/youyk/models 아래 PersonOUterClass 만들어짐
+option java_package = "com.youyk.models.sec11"; //build/generated/source/proto/main/java/com/youyk/models 아래 PersonOUterClass 만들어짐
 //option go_package; //아래 message ~는 중립적인 언어로 만들어졌는데 이렇게 하면 여러 언어로 만들어지게 할 수 있다.
 
 message BalanceCheckRequest {
@@ -36,30 +36,6 @@ message Money{
   int32 amount = 1;
 }
 
-message DepositRequest{
-  //client streaming에서 account_number를 하나만 보내고 계속 money만 보내기 위해서 oneof를 사용함
-  oneof request {
-    int32 account_number = 1;
-    Money money = 2;
-  }
-}
-
-message TransferRequest{
-  int32 from_account = 1;
-  int32 to_account =2;
-  int32 amount =3;
-}
-
-enum TransferStatus{
-  REJECTED = 0;
-  COMPLETED = 1;
-}
-
-message TransferResponse{
-  TransferStatus status = 1;
-  AccountBalance from_account = 2;
-  AccountBalance to_account=3;
-}
 
 //서비스 정의
 service BankService {
@@ -68,16 +44,9 @@ service BankService {
   //param으로 BalanceCheckRequest를 받고 response로 AccountBalance 타입을 반환
   rpc GetAccountBalance(BalanceCheckRequest) returns (AccountBalance);
 
-  //parameter가 없을 때 이렇게 사용
-  rpc GetAllAccounts(google.protobuf.Empty) returns (AllAccountsResponse);
 
   //Server Stream를 사용할 때는 이렇게 리턴 파라미터의 streaming response라는 의미인 stream를 사용한다
   rpc Withdraw(WithdrawRequest) returns (stream Money);
 
-  //client streaming
-  rpc Deposit(stream DepositRequest) returns (AccountBalance);
 }
 
-service TransferService {
-  rpc Transfer(stream TransferRequest) returns (stream TransferResponse);
-}
