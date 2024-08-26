@@ -2,17 +2,12 @@ package org.example.sec09;
 
 
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.youyk.models.sec09.Money;
-
-import com.youyk.models.sec09.AccountBalance;
-import com.youyk.models.sec09.BalanceCheckRequest;
-import com.youyk.models.sec09.BankServiceGrpc;
-
-import com.youyk.models.sec09.WithdrawRequest;
+import com.vinsguru.models.sec09.*;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.util.concurrent.TimeUnit;
+
 import org.example.sec09.repository.AccountRepository;
 import org.example.sec09.validator.RequestValidator;
 import org.slf4j.Logger;
@@ -48,7 +43,7 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
     }
 
     @Override
-    public void withdraw(WithdrawRequest request, StreamObserver<com.youyk.models.sec09.Money> responseObserver) {
+    public void withdraw(WithdrawRequest request, StreamObserver<Money> responseObserver) {
         //validateAccount가 empty면 or이 trigger 됨
         RequestValidator.validateAccount(request.getAccountNumber())
                 .or(()-> RequestValidator.isAmountDivisibleBy10(request.getAmount()))
@@ -60,7 +55,7 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
                 );
     }
 
-    private void sendMoney(WithdrawRequest request, StreamObserver<com.youyk.models.sec09.Money> responseObserver) {
+    private void sendMoney(WithdrawRequest request, StreamObserver<Money> responseObserver) {
           /*
             Ideally we should do some input validation. But we are going to assume only happy path scenarios.
             Because, in gRPC, there are multiple ways to communicate the error message to the client. It has to be discussed in detail separately.
@@ -80,7 +75,5 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
         }
         responseObserver.onCompleted();
     }
-
-
 
 }

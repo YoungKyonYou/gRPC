@@ -12,9 +12,8 @@ public class RequestValidator {
         return Optional.of(Status.INVALID_ARGUMENT.withDescription("account number should be between 1 and 10"));
     }
 
-
     public static Optional<Status> isAmountDivisibleBy10(int amount){
-        if(amount > 0 && amount % 10  == 0){
+        if(amount > 0 && amount % 10 == 0){
             return Optional.empty();
         }
         return Optional.of(Status.INVALID_ARGUMENT.withDescription("requested amount should be 10 multiples"));

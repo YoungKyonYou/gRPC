@@ -1,6 +1,6 @@
 package com.youyk.test.sec09;
 
-import com.youyk.models.sec09.BankServiceGrpc;
+import com.vinsguru.models.sec09.BankServiceGrpc;
 import com.youyk.test.common.AbstractChannelTest;
 import org.example.common.GrpcServer;
 import org.example.sec09.BankService;
