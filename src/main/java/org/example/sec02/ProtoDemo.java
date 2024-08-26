@@ -10,10 +10,10 @@ public class ProtoDemo {
 
     public static void main(String[] args){
         // create person1
-        var person1 = createPerson();
+        Person person1 = createPerson();
 
         // create another instance with same values
-        var person2 = createPerson();
+        Person person2 = createPerson();
 
         // compare
         log.info("equals {}", person1.equals(person2)); // true 객체가 다르나 같은 값이면 동일하다고 반환
@@ -24,7 +24,7 @@ public class ProtoDemo {
         // mutable? No
 
         // create another instance with diff values
-        var person3 = person1.toBuilder().setName("mike").build();
+        Person person3 = person1.toBuilder().setName("mike").build();
         log.info("person3: {}", person3); //person3 : name "mike"
 
         // compare
@@ -32,7 +32,7 @@ public class ProtoDemo {
         log.info("== {}", (person1 == person3));// false
 
         //null? null을 set할 수 없음 그래서 clearName()를 대신해서 쓴다
-        var person4 = person1.toBuilder().clearName().build();
+        Person person4 = person1.toBuilder().clearName().build();
         log.info("person4: {}", person4);//person4: age 12
 
     }
